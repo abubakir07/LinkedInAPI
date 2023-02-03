@@ -31,7 +31,6 @@ LOCAL_APPS = [
     'apps.favorites',
     'apps.likes',
     'apps.posts',
-    'apps.premium',
 ]
 
 REQUIREMENTS = [
