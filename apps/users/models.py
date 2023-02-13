@@ -20,42 +20,24 @@ class User(AbstractUser):
         verbose_name='phone_number',
         validators=[phone_regex],
         max_length=17,
-        unique=True
+        unique=True,
     )
     bio = models.TextField(
         verbose_name='bio',
         null=True,
         blank=True
     )
-    work_experience = models.ManyToManyField(
-        'WorkExperience',
-        related_name='work_experience',
-        verbose_name='work_experience',
-        # null=True,
-        # blank=True
-        )
-    education = models.ManyToManyField(
-        'Education',
-        related_name='education',
-        verbose_name='education',
-        # null=True,
-        # blank=True
-        )
     create_at = models.DateTimeField(
         auto_now_add=True,
         verbose_name='create_at'
     )
-    is_premium=models.BooleanField(
-        verbose_name='premium',
-        default=False
-        )
-
+    
     class Meta:
         verbose_name = "user"
         verbose_name_plural = 'Users'
 
     def __str__(self):
-       return f'Nickname: {self.username}'
+       return f'Username: {self.username}'
 
 
 class Education(models.Model):
@@ -87,6 +69,14 @@ class Education(models.Model):
         verbose_name='graduated',
         default=False
         )
+    owner = models.ForeignKey(
+    User, 
+    on_delete=models.DO_NOTHING,
+    related_name='user_educattion',
+    verbose_name='user_educattion',
+    null=True,
+    blank=True
+)
 
     class Meta:
         verbose_name = "education"
@@ -97,37 +87,17 @@ class Education(models.Model):
     
 
 class Skills(models.Model):
-    LEVEL_CHOICES = [
-        ('none', 'None'),
-        ('basic', 'Basic'),
-        ('intermediate', 'Intermediate'),
-        ('advanced', 'Advanced'),
-        ('expert', 'Expert'),
-    ]
-
     name = models.CharField(
         verbose_name='skill name',
-        max_length=100
-        )
-    level = models.CharField(
         max_length=100,
-        choices=LEVEL_CHOICES
+        unique=True
         )
-    owner = models.ForeignKey(
-        'User', 
-        on_delete=models.DO_NOTHING,
-        related_name='user_skill',
-        verbose_name='user_skill',
-        null=True,
-        blank=True
-    )
-
     class Meta:
         verbose_name = "skill"
         verbose_name_plural = 'Skills'
 
     def __str__(self):
-        return f'Skill: {self.name}---{self.level}'
+        return f' ● {self.name}'
 
 
 class WorkExperience(models.Model):
@@ -154,7 +124,8 @@ class WorkExperience(models.Model):
     job_type = models.CharField(
         verbose_name='job_type',
         max_length=20,
-        choices=JOB_TYPE_CHOICES)
+        choices=JOB_TYPE_CHOICES,
+        )
     company_name = models.CharField(
         verbose_name='company_name',
         max_length=100,
@@ -203,16 +174,14 @@ class WorkExperience(models.Model):
         Skills,
         related_name='skills',
         verbose_name='skills',
-        # null=True,
-        # blank=True
+        null=True,
+        blank=True
         )
     owner = models.ForeignKey(
-        'User', 
+        User, 
         on_delete=models.DO_NOTHING,
         related_name='user_work_exp',
         verbose_name='user_work_exp',
-        null=True,
-        blank=True
     )
 
     class Meta:

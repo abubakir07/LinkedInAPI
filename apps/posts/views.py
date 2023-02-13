@@ -1,3 +1,4 @@
+from django.db.models import Q
 from rest_framework import mixins, viewsets, permissions
 
 from apps.posts.models import Post
@@ -21,3 +22,20 @@ class PostApiViewSet(viewsets.GenericViewSet,
         if self.action in ['retrieve', 'update', 'destroy']:
             return [IsOwner()]
         return [permissions.IsAuthenticated()]
+
+
+
+from apps.contacts.models import Contact
+from rest_framework.response import Response
+
+class UserContactPostView(viewsets.GenericViewSet,
+                           mixins.ListModelMixin,
+                           mixins.RetrieveModelMixin):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+
+    def get_queryset(self):
+        contacts = Contact.objects.filter(owner=self.request.user)
+        contacts_ids = contacts.values_list('members', flat=True)
+        return Post.objects.filter(Q(owner__in=contacts_ids))
+

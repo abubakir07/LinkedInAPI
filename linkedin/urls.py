@@ -19,6 +19,7 @@ api_urlpatterns = [
     path('contacts/', include('apps.contacts.urls')),
     path('chats/', include('apps.chats.urls')),
     path('message/', include('apps.message.urls')),
+    # path('premium/', include('apps.premium.urls')),
 
     # authorization
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),

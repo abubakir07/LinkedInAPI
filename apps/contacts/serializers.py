@@ -1,13 +1,14 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 
-from apps.contacts.models import Contacts
+from apps.contacts.models import Contact
 
 
-class ContactsSerializer(serializers.ModelSerializer):
+class ContactSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Contacts
+        model = Contact
+        read_only_fields = ('owner',)
         fields = (
             'id',
             'owner',
@@ -15,4 +16,3 @@ class ContactsSerializer(serializers.ModelSerializer):
             'created_at',
             'updated_at'
             )
-        read_only_fields = ('owner',)

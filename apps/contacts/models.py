@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
-class Contacts(models.Model):
+class Contact(models.Model):
     owner = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -27,9 +27,9 @@ class Contacts(models.Model):
         )
 
     class Meta:
-        verbose_name = "Контакт"
-        verbose_name_plural = "Контакты"
+        verbose_name = "contact"
+        verbose_name_plural = "Contacts"
 
     def __str__(self):
-        return f"ID: {self.owner.username}"
+        return f"{self.owner.username}"
     

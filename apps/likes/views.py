@@ -1,4 +1,5 @@
-from rest_framework import mixins, viewsets, permissions
+from rest_framework import mixins, viewsets
+from rest_framework.permissions import IsAuthenticated
 
 from apps.likes.models import PostLike, CommentLike
 from apps.likes.serializers import PostLikeSerializer, CommentLikeSerializer
@@ -8,6 +9,7 @@ from utils.permissions import IsOwner
 class PostLikeViewSet(viewsets.GenericViewSet,
                       mixins.CreateModelMixin,
                       mixins.RetrieveModelMixin,
+                      mixins.ListModelMixin,
                       mixins.DestroyModelMixin,):
     queryset = PostLike.objects.all()
     serializer_class = PostLikeSerializer
@@ -16,14 +18,15 @@ class PostLikeViewSet(viewsets.GenericViewSet,
         serializer.save(owner=self.request.user)
 
     def get_permissions(self):
-        if self.action in ["list", "retrieve", "destroy"]:
+        if self.action in ["retrieve", "destroy"]:
             return [IsOwner()]
-        return [permissions.IsAuthenticated()]
+        return [IsAuthenticated()]
 
 
 class CommentLikeViewSet(viewsets.GenericViewSet,
                          mixins.CreateModelMixin,
                          mixins.RetrieveModelMixin,
+                         mixins.ListModelMixin,
                          mixins.DestroyModelMixin,):
     queryset = CommentLike.objects.all()
     serializer_class = CommentLikeSerializer
@@ -34,4 +37,4 @@ class CommentLikeViewSet(viewsets.GenericViewSet,
     def get_permissions(self):
         if self.action in ["retrieve", "destroy"]:
             return [IsOwner()]
-        return [permissions.IsAuthenticated()]
+        return [IsAuthenticated()]

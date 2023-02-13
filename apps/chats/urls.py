@@ -1,12 +1,12 @@
 from rest_framework.routers import DefaultRouter
 
-from apps.chats.views import ChatAPIViewSet
+from apps.chats.views import ChatApiViewSet
 
 
 router = DefaultRouter()
 router.register(
     '',
-    ChatAPIViewSet,
+    ChatApiViewSet,
     basename='chats'
     )
 

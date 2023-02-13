@@ -8,7 +8,6 @@ class UserAdmin(admin.ModelAdmin):
     list_display = (
         'username',
         'email',
-        'image'
     )
 
 
@@ -25,7 +24,6 @@ class WorkExperienceAdmin(admin.ModelAdmin):
 class SkillsAdmin(admin.ModelAdmin):
     list_display = (
         'name',
-        'level'
     )
 
 

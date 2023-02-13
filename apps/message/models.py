@@ -26,8 +26,8 @@ class Message(models.Model):
     chat = models.ForeignKey(
         Chat,
         on_delete=models.CASCADE,
-        verbose_name='chat id',
-        related_name="chats"
+        verbose_name='chat_messege',
+        related_name="chat_messege"
     )
     create_at = models.DateTimeField(
         verbose_name='create_at',
